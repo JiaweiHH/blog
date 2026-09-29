@@ -1,0 +1,26 @@
+{{ define "title" }}{{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+{{ .Content }}
+<ul class="blog-posts">
+  {{ range (where .Site.RegularPages "Type" "blog").ByDate.Reverse }}
+  <li>
+    <span>
+      <time datetime='{{ .Date.Format "2006-01-02" }}'>
+        {{ .Date.Format (default "02 Jan, 2006" .Site.Params.dateFormat) }}
+      </time>
+    </span>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  </li>
+  {{ else }}
+  <li>暂无文章。</li>
+  {{ end }}
+</ul>
+{{ with .Site.Taxonomies.tags }}
+<div class="post-tags">
+  {{ range . }}
+  <a href="{{ .Page.RelPermalink }}">#{{ .Page.Title }}</a>
+  {{ end }}
+</div>
+{{ end }}
+{{ end }}

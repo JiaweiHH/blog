@@ -1,0 +1,13 @@
+# Hugo build output and local caches
+/public/
+/resources/_gen/
+/.hugo_build.lock
+/.hugo_cache/
+
+# Local tooling and secrets
+/.wrangler/
+/node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
