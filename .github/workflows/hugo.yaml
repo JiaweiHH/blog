@@ -1,0 +1,64 @@
+name: Publish blog to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  HUGO_VERSION: 0.167.0
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout blog and theme
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Install Hugo
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl --fail --location --retry 3 --remote-name "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          curl --fail --location --retry 3 --remote-name "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_checksums.txt"
+          sha256sum --check --ignore-missing "hugo_${HUGO_VERSION}_checksums.txt"
+          mkdir -p "${RUNNER_TEMP}/hugo-bin"
+          tar -xzf "hugo_${HUGO_VERSION}_linux-amd64.tar.gz" -C "${RUNNER_TEMP}/hugo-bin" hugo
+          echo "${RUNNER_TEMP}/hugo-bin" >> "${GITHUB_PATH}"
+
+      - name: Build blog
+        env:
+          HUGO_BASEURL: ${{ steps.pages.outputs.base_url }}/
+        run: hugo --gc --minify
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v5

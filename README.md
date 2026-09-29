@@ -21,21 +21,25 @@ hugo new content blog/my-new-post.md
 
 编辑 `content/blog/my-new-post.md`。如果文章包含 `draft = true`，正式发布前改为 `false`。
 
-## Cloudflare Pages 发布
+## GitHub Pages 发布
 
-在 Cloudflare 的 Workers & Pages 中创建 **Pages** 项目，导入 GitHub 仓库 `JiaweiHH/blog`。
+博客地址：<https://jiaweihh.github.io/blog/>
 
-| 配置项 | 值 |
-| --- | --- |
-| 生产分支 | `main` |
-| 框架预设 | `Hugo` |
-| 构建命令 | `hugo --minify --baseURL "$CF_PAGES_URL"` |
-| 构建输出目录 | `public` |
-| 根目录 | 留空（仓库根目录） |
-| 环境变量 | `HUGO_VERSION=0.167.0`，同时应用于 Production 和 Preview |
+仓库的 **Settings → Pages → Source** 使用 **GitHub Actions**。
+`.github/workflows/hugo.yaml` 会在推送到 `main` 后自动构建并发布博客，也可以在 Actions 页面手动运行。
 
-构建命令会使用 Cloudflare 分配的网址覆盖 `hugo.toml` 中的示例 `baseURL`。取得正式域名后，可以将配置中的 `baseURL` 改为该地址；使用自定义域名时，需要同时调整生产环境构建命令中的 `--baseURL`。
+日常更新文章后，在项目目录执行：
 
-首次部署完成后，推送到 `main` 会自动重新发布。无需提交 `public/` 构建产物。
+```sh
+git add content
+git commit -m "更新文章"
+git push
+```
 
-参考：[Cloudflare 官方 Hugo 部署指南](https://developers.cloudflare.com/pages/framework-guides/deploy-a-hugo-site/)。
+如果还修改了配置、图片或模板，也需要将对应文件加入提交。无需提交 `public/` 构建产物。
+
+发布流程固定使用 Hugo `0.167.0`，自动下载主题子模块，并使用 GitHub Pages 提供的网址构建，确保文章和图片链接包含 `/blog/` 路径。
+
+在 [Actions 页面](https://github.com/JiaweiHH/blog/actions) 查看发布进度。
+
+参考：[Hugo 官方 GitHub Pages 部署指南](https://gohugo.io/host-and-deploy/host-on-github-pages/)。
