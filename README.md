@@ -21,6 +21,14 @@ hugo new content blog/my-new-post.md
 
 编辑 `content/blog/my-new-post.md`。如果文章包含 `draft = true`，正式发布前改为 `false`。
 
+## 网站图标
+
+图标源文件是 `assets/images/favicon.webp`，在 `hugo.toml` 的 `params.favicon` 中指定。
+替换这张正方形图片即可更新图标。Hugo 会自动生成 16、32、48 像素的 PNG 标签页图标和 180 像素的 Apple 主屏幕图标。
+生成文件的名称会随图片内容变化，帮助浏览器加载更新后的图标。
+
+替换后，将 `assets/images/favicon.webp` 提交并推送到 GitHub，等待自动发布完成。
+
 ## GitHub Pages 发布
 
 博客地址：<https://jiaweihh.github.io/blog/>

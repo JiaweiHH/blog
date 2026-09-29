@@ -1,0 +1,13 @@
+{{- with .Site.Params.favicon -}}
+  {{- $source := resources.Get . -}}
+  {{- if not $source -}}
+    {{- errorf "Favicon image not found in assets/: %s" . -}}
+  {{- else -}}
+    {{- range slice 16 32 48 -}}
+      {{- $icon := $source.Resize (printf "%dx%d png" . .) -}}
+      <link rel="icon" type="image/png" sizes="{{ . }}x{{ . }}" href="{{ $icon.RelPermalink }}">
+    {{- end -}}
+    {{- $touchIcon := $source.Resize "180x180 png" -}}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ $touchIcon.RelPermalink }}">
+  {{- end -}}
+{{- end -}}
