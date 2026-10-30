@@ -1,6 +1,6 @@
 +++
 title = "【Q4-MCF】chunk_gla_bwd_kernel_inter 性能分析"
-date = "2026-10-30T11:00:00+08:00"
+date = "2026-10-31T11:00:00+08:00"
 slug = "mcf-chunk-gla-bwd-kernel-inter-performance"
 description = "分析 chunk_gla_bwd_kernel_inter 在 MCF 开关下的 UB 地址复用、跨迭代阻塞依赖，以及 GSS 同步等待的优化思路。"
 tags = ["编译器", "性能分析"]
