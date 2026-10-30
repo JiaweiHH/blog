@@ -17,4 +17,32 @@
     gap: 0.25rem 0.5rem;
     font-size: 0.875rem;
   }
+
+  /* Keep long IR listings scrollable without losing indentation. */
+  .highlight pre {
+    width: auto;
+    min-width: 0;
+    max-height: 36rem;
+    margin: 0;
+    padding: 0.75rem;
+    overflow: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+    tab-size: 4;
+  }
+
+  .highlight pre code {
+    display: block;
+    padding: 0;
+  }
+
+  .highlight pre:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: -2px;
+  }
+
+  ul.blog-posts li a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
 </style>
